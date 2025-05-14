@@ -7,11 +7,11 @@ on:
 
 jobs:
   call-tests:
-    uses: ./.github/workflows/resuableworkflow.yml
+    uses: ./.github/workflows/reusableworkflow.yml
     with:
       python-version: "3.11"
     outputs:
-      test-result: ${{ steps.set-result.outputs.outcome }}
+      test-result: ${{ jobs.call-tests.outputs.test-result }}
 
   print-result:
     runs-on: ubuntu-latest
