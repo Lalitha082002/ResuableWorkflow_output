@@ -1,0 +1,27 @@
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+    outputs:
+      test-result:
+        value: ${{ jobs.test.outputs.result }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set-result.outputs.outcome }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - run: pip install -r requirements.txt
+      - run: pytest
+
+      - id: set-result
+        run: echo "outcome=PASSED" >> $GITHUB_OUTPUT
